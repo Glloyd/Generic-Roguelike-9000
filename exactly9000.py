@@ -34,7 +34,7 @@ class Object:
  
  
 def handle_keys():
-    key = libtcod.console_wait_for_keypress(True)
+    key = libtcod.console_wait_for_keypress(True) #dumb comments are dumb
  
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         #Alt+Enter: toggle fullscreen
