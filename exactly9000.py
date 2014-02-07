@@ -1,5 +1,3 @@
-#It's exactly 9000. Holy fuck python is weird. I miss DM already. 
-
 import libtcodpy as libtcod
  
 #actual size of the window
@@ -26,6 +24,14 @@ class Tile:
         if block_sight is None: block_sight = blocked
         self.block_sight = block_sight
  
+class Rect:
+    #a rectangle on the map. used to characterize a room.
+    def __init__(self, x, y, w, h):
+        self.x1 = x
+        self.y1 = y
+        self.x2 = x + w
+        self.y2 = y + h
+ 
 class Object:
     #this is a generic object: the player, a monster, an item, the stairs...
     #it's always represented by a character on screen.
@@ -42,9 +48,9 @@ class Object:
             self.y += dy
  
     def draw(self):
-        #set the color and then draw the character that represents this object at its position
-        libtcod.console_set_default_foreground(con, self.color)
-        libtcod.console_put_char(con, self.x, self.y, self.char, libtcod.BKGND_NONE)
+            #set the color and then draw the character that represents this object at its position
+            libtcod.console_set_default_foreground(con, self.color)
+            libtcod.console_put_char(con, self.x, self.y, self.char, libtcod.BKGND_NONE)
  
     def clear(self):
         #erase the character that represents this object
@@ -52,24 +58,53 @@ class Object:
  
  
  
+def create_room(room):
+    global map
+    #go through the tiles in the rectangle and make them passable
+    for x in range(room.x1 + 1, room.x2):
+        for y in range(room.y1 + 1, room.y2):
+            map[x][y].blocked = False
+            map[x][y].block_sight = False
+ 
+def create_h_tunnel(x1, x2, y):
+    global map
+    #horizontal tunnel. min() and max() are used in case x1>x2
+    for x in range(min(x1, x2), max(x1, x2) + 1):
+        map[x][y].blocked = False
+        map[x][y].block_sight = False
+ 
+def create_v_tunnel(y1, y2, x):
+    global map
+    #vertical tunnel
+    for y in range(min(y1, y2), max(y1, y2) + 1):
+        map[x][y].blocked = False
+        map[x][y].block_sight = False
+ 
 def make_map():
     global map
  
-    #fill map with "unblocked" tiles
-    map = [[ Tile(False)
+    #fill map with "blocked" tiles
+    map = [[ Tile(True)
         for y in range(MAP_HEIGHT) ]
             for x in range(MAP_WIDTH) ]
  
-    #place two pillars to test the map
-    map[30][22].blocked = True
-    map[30][22].block_sight = True
-    map[50][22].blocked = True
-    map[50][22].block_sight = True
+    #create two rooms
+    room1 = Rect(20, 15, 10, 15)
+    room2 = Rect(50, 15, 10, 15)
+    create_room(room1)
+    create_room(room2)
+ 
+    #connect them with a tunnel
+    create_h_tunnel(25, 55, 23)
+ 
+    #place the player inside the first room
+    player.x = 25
+    player.y = 23
  
  
 def render_all():
-    global color_light_wall
-    global color_light_ground
+    global color_dark_wall, color_light_wall
+    global color_dark_ground, color_light_ground
  
     #go through all tiles, and set their background color
     for y in range(MAP_HEIGHT):
@@ -88,7 +123,8 @@ def render_all():
     libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
  
 def handle_keys():
-    key = libtcod.console_wait_for_keypress(True)  #dumb comments are dumb
+    #key = libtcod.console_check_for_keypress()  #real-time
+    key = libtcod.console_wait_for_keypress(True)  #turn-based
  
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         #Alt+Enter: toggle fullscreen
@@ -131,7 +167,6 @@ objects = [npc, player]
  
 #generate map (at this point it's not drawn to the screen)
 make_map()
- 
  
 while not libtcod.console_is_window_closed():
  
