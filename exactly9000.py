@@ -3,12 +3,12 @@ import math
 import textwrap
  
 #actual size of the window
-SCREEN_WIDTH = 80
-SCREEN_HEIGHT = 50
+SCREEN_WIDTH = 100
+SCREEN_HEIGHT = 70
  
 #size of the map
-MAP_WIDTH = 80
-MAP_HEIGHT = 43
+MAP_WIDTH = 100
+MAP_HEIGHT = 63
  
 #sizes and coordinates relevant for the GUI
 BAR_WIDTH = 20
