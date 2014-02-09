@@ -3,12 +3,12 @@ import math
 import textwrap
  
 #actual size of the window
-SCREEN_WIDTH = 80
-SCREEN_HEIGHT = 50
+SCREEN_WIDTH = 120
+SCREEN_HEIGHT = 80
  
 #size of the map
-MAP_WIDTH = 80
-MAP_HEIGHT = 43
+MAP_WIDTH = 120
+MAP_HEIGHT = 73
  
 #sizes and coordinates relevant for the GUI
 BAR_WIDTH = 20
@@ -20,8 +20,8 @@ MSG_HEIGHT = PANEL_HEIGHT - 1
 INVENTORY_WIDTH = 50
  
 #parameters for dungeon generator
-ROOM_MAX_SIZE = 10
-ROOM_MIN_SIZE = 6
+ROOM_MAX_SIZE = 12
+ROOM_MIN_SIZE = 5
 MAX_ROOMS = 30
 MAX_ROOM_MONSTERS = 3
 MAX_ROOM_ITEMS = 2
