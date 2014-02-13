@@ -450,7 +450,7 @@ def make_map():
             num_rooms += 1
  
     #create stairs at the center of the last room
-    stairs = Object(new_x, new_y, '<', 'stairs', libtcod.white, always_visible=True)
+    stairs = Object(new_x, new_y, '>', 'stairs', libtcod.white, always_visible=True)
     objects.append(stairs)
     stairs.send_to_back()  #so it's drawn below the monsters
  
@@ -838,7 +838,7 @@ def handle_keys():
                        '\nExperience to level up: ' + str(level_up_xp) + '\n\nMaximum HP: ' + str(player.fighter.max_hp) +
                        '\nAttack: ' + str(player.fighter.power) + '\nDefense: ' + str(player.fighter.defense), CHARACTER_SCREEN_WIDTH)
  
-            if key_char == '<':
+            if key_char == '>':
                 #go down stairs, if the player is on them
                 if stairs.x == player.x and stairs.y == player.y:
                     next_level()
