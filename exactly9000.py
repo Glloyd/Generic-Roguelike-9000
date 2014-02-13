@@ -1,3 +1,5 @@
+#yolo
+
 import libtcodpy as libtcod
 import math
 import textwrap
